@@ -8,5 +8,5 @@ configure_file(key.pem key.pem COPYONLY)
 
 find_package(OpenSSL REQUIRED)
 
-add_executable(tls_server main.c trie.h trie.c)
+add_executable(tls_server main.c trie.h trie.c commands.h commands.c)
 target_link_libraries(tls_server OpenSSL::SSL)

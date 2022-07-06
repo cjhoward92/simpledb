@@ -8,6 +8,8 @@
 
 #include "trie.h"
 
+#define MAX_BUF_SIZE 1024
+
 static const int server_port = 11443;
 
 typedef unsigned char bool;
@@ -113,12 +115,7 @@ void run_server() {
     int server_skt = -1;
     int client_skt = -1;
 
-    /* used by getline relying on realloc, can't be statically allocated */
-    char *txbuf = NULL;
-    size_t txcap = 0;
-    int txlen;
-
-    char rxbuf[128];
+    char rxbuf[MAX_BUF_SIZE];
     int rxcap = sizeof(rxbuf);
     int rxlen;
 
@@ -214,9 +211,6 @@ void run_server() {
     if (client_skt != -1) {
         close(client_skt);
     }
-    if (txbuf != NULL && txcap > 0) {
-        free(txbuf);
-    }
 }
 
 int main() {
@@ -227,24 +221,6 @@ int main() {
     // TODO: support a client!
     bool is_server = true;
 
-    trie *db = new_trie();
-
-    trie_data * data = new_trie_data(10, "helloworld");
-    trie_key key;
-    key.len = 10;
-    key.key = "01234567890";
-    if (insert_trie_data(db, &key, data) < 0) {
-        perror("Error inserting trie_data");
-        exit(EXIT_FAILURE);
-    }
-    trie_data *found;
-    if (find_trie_data(db, &key, &found) < 0) {
-        perror("Error finding data");
-        exit(EXIT_FAILURE);
-    }
-    printf("Found data: %s\n", (char *)(found->data));
-
-    free_trie(db);
 
     if (is_server) {
         run_server();
