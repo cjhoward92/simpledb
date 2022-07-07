@@ -1,12 +1,19 @@
 cmake_minimum_required(VERSION 3.21)
 project(tls_server C)
 
+# Custom cmake modules
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 set(CMAKE_C_STANDARD 23)
+
+# Show all warning messages
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
 configure_file(cert.pem cert.pem COPYONLY)
 configure_file(key.pem key.pem COPYONLY)
 
-find_package(OpenSSL REQUIRED)
+add_subdirectory(src)
 
-add_executable(tls_server main.c trie.h trie.c commands.h commands.c)
-target_link_libraries(tls_server OpenSSL::SSL)
+enable_testing()
+
+add_subdirectory(tests)
