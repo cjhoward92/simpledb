@@ -6,7 +6,7 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
-#include "trie.h"
+#include "../lib/trie.h"
 
 #define MAX_BUF_SIZE 1024
 

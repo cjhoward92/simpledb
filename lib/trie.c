@@ -104,10 +104,10 @@ int insert_trie_data(trie *root, const trie_key * key, const trie_data * data) {
     trie * tmp = root;
     for (size_t i = 0; i < key->len; i++) {
         const char c = clean_key_char(key->key[i]);
-        trie * next_node = tmp->children[c];
+        trie * next_node = tmp->children[(int)c];
         if (next_node == NULL) {
-            tmp->children[c] = new_trie();
-            next_node = tmp->children[c];
+            tmp->children[(int)c] = new_trie();
+            next_node = tmp->children[(int)c];
             next_node->word = 0;
             next_node->c = c;
             next_node->data = NULL;
@@ -131,7 +131,7 @@ int delete_trie_data(trie *root, const trie_key * key) {
     trie * tmp = root;
     for (size_t i = 0; i < key->len; i++) {
         const char c = clean_key_char(key->key[i]);
-        tmp = tmp->children[c];
+        tmp = tmp->children[(int)c];
         if (tmp == NULL) {
             return -1;
         }
@@ -154,7 +154,7 @@ int find_trie_data(const trie *root, const trie_key * key, trie_data **out) {
     trie * tmp = root;
     for (size_t i = 0; i < key->len; i++) {
         const char c = clean_key_char(key->key[i]);
-        tmp = tmp->children[c];
+        tmp = tmp->children[(int)c];
         if (tmp == NULL) {
             return -1;
         }

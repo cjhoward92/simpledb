@@ -4,10 +4,9 @@
 
 #include <check.h>
 
-#include "../src/commands.h"
+#include "../lib/commands.h"
 
 START_TEST(test_parse_command) {
-    parsed_command *cmd;
     printf("Hello\n");
     ck_assert_msg(1 == 1, "invalid failed tests");
 } END_TEST
