@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(tls_server C)
+project(server C)
 
 # Custom cmake modules
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")

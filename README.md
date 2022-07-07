@@ -2,6 +2,13 @@
 
 A simple database system over telnet with TLS (using OpenSSL).
 
+## Building
+
+Make sure you have [check](https://libcheck.github.io/check/web/install.html) installed.
+Make sure you have Valgrind installed.
+
+Only builds for linux.
+
 ## Simple design
 
 The db will support the following commands:
