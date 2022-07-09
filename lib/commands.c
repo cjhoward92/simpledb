@@ -16,7 +16,7 @@ static inline u_int8_t is_whitespace(char c) {
     return 0;
 }
 
-int parse_command(size_t len, const char* str, parsed_command **out) {
+int parse_command(size_t len, const char* str, command **out) {
     if (out == NULL) {
         return -1;
     }
@@ -25,29 +25,48 @@ int parse_command(size_t len, const char* str, parsed_command **out) {
         return -1;
     }
 
-    (*out) = (parsed_command *)malloc(sizeof(parsed_command));
     command *cmd = (command *)malloc(sizeof(command));
+    cmd->cmd_str = NULL;
+    cmd->payload = NULL;
+    cmd->len = 0;
+    cmd->payload_len = 0;
 
     size_t i = 0;
     while (!is_whitespace(str[i]) && i < len) { i++; }
 
     if (i >= len) {
         free(cmd);
-        free(*out);
         return -1;
     }
 
     cmd->len = i;
-    cmd->cmd_str = (char *)malloc(cmd->len);
+    cmd->cmd_str = (char *)calloc(cmd->len, sizeof(char));
     memcpy(cmd->cmd_str, str, cmd->len);
 
-    cmd->payload_len = len - cmd->len - 1;
-    cmd->payload = (char *)malloc(cmd->payload_len);
+    cmd->payload_len = len - cmd->len -1;
+    cmd->payload = (char *)calloc(cmd->len, sizeof(char));
     memcpy(cmd->payload, (str + cmd->len + 1), cmd->payload_len);
 
-    (*out)->cmd = cmd;
+    (*out) = cmd;
     cmd = NULL;
 
     return 0;
 }
 
+void free_command(command *cmd) {
+    if (cmd->cmd_str) {
+        free(cmd->cmd_str);
+    }
+    if (cmd->payload) {
+        free(cmd->payload);
+    }
+    free(cmd);
+    cmd = NULL;
+}
+
+void free_parsed_command(parsed_command *p_cmd) {
+    if (p_cmd->cmd) {
+        free_command(p_cmd->cmd);
+    }
+    free(p_cmd);
+}

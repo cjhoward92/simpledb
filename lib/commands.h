@@ -28,7 +28,10 @@ typedef struct parsed_command {
     execute_cmd execute;
 } parsed_command;
 
-int parse_command(size_t len, const char* str, parsed_command **out);
-int execute_command(const parsed_command * parsed);
+int parse_command(size_t len, const char* str, command **out);
+int execute_command(const command * parsed);
+
+void free_parsed_command(parsed_command *p_cmd);
+void free_command(command *cmd);
 
 #endif //TLS_SERVER_COMMANDS_H
